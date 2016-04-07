@@ -79,22 +79,30 @@ public class FXMLDocumentController implements Initializable {
     }
     @FXML
     private void handleButtonAction3(ActionEvent event) {
+        setEstadoInicial();
+        setCadena();
         ejecutarMT(texto);
     }
     
     private void ejecutarMT(String cadena){
+        bandera = false;
         int indexC = 0;
         String simbolo = "";
+        System.out.println("cadena: "+cadena);
         while(!bandera){
             if(indexC < 0 || indexC > cadena.length()-1){
                  simbolo =  "B";
             }else {
                 simbolo =  cadena.charAt(indexC) + "";
+                System.out.println("Calculo de simbolo: "+simbolo+"index:"+indexC);
             }
             
             for (int i = 0; i < re.size(); i++) {
                 Reglas aux = re.get(i);
                 if(estadoI.equals(aux.getEstadoActual()) && simbolo.equals(aux.getSimboloActual())){
+                     //(estadoActual, estadoAmoverse, simboloActual,simboloARemplazar,movimiento)
+                    System.out.println("Simbolo: "+simbolo+"----index: "+indexC);
+                    System.out.println(aux.getEstadoActual()+":"+aux.getEstadoNuevo()+":"+aux.getSimboloActual()+":"+aux.getSimboloNuevo()+":"+aux.getMovimiento());
                     System.out.println("Cadena Actual: "+ cadena);
                     cadena = replaceCharAt(cadena, indexC, aux.getSimboloNuevo().charAt(0));
                     System.out.println("Cadena Nueva: "+cadena);
@@ -112,7 +120,9 @@ public class FXMLDocumentController implements Initializable {
                         System.out.println("FIN DEL PROGRAMA "+cadena);
                         bandera = true;
                     }
+                    break;
                 }
+                
             }
         }
         
@@ -120,19 +130,23 @@ public class FXMLDocumentController implements Initializable {
     
     public String replaceCharAt(String s, int pos, char c) {
         System.out.println("pos"+pos);
-        if(pos < 0 || pos > s.length()-1){
-                 return s;
-            }else {
+        if(pos < 0){
+            if(!"B".equals(c+""))
+                 return c+s;                
+            }else if(( pos > s.length()-1)){
+              if(!"B".equals(c+""))
+                 return s+c;  
+            }else{    
                 return s.substring(0, pos) + c + s.substring(pos + 1);
             }
-        
+       return s; 
     }
     private void verificarCadena(){
         //verificar que la cadena ingresada solo tenga simbolos del alfabeto
     }
     
     private void getReglas(){
-        re = new ArrayList<Reglas>(); 
+        re.clear(); 
         ObservableList<Node> childrens = tablaEstados.getChildren();    
         for (int i = 1; i < tablaEstados.getColumnConstraints().size(); i++) {
             for (int j = 1; j <= tablaEstados.getRowConstraints().size(); j++) {
