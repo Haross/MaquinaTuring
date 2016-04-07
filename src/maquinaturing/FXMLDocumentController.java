@@ -38,8 +38,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private AnchorPane menu, datosView,tablaView,principalView;
     @FXML
-    private TextArea textAreaDatos;
-    @FXML
     private TableView<DatosTu> tablaPri;
     @FXML
     private TableColumn<DatosTu, String> columnaCN,columnaE,columnaCA,columnaR;
@@ -99,10 +97,11 @@ public class FXMLDocumentController implements Initializable {
     }
     @FXML
     private void continuar(ActionEvent event) {
-        tablaEstados.getChildren().clear();
+        tablaEstados = new GridPane();
         setFilas();
         setColumnas();
         setContenidoTabla();
+      
         scrollP.setContent(tablaEstados);
         setEstadoFinal();
         setEstadoInicial();
