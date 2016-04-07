@@ -8,6 +8,7 @@ package maquinaturing;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +18,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -29,9 +32,19 @@ import javafx.scene.layout.RowConstraints;
 public class FXMLDocumentController implements Initializable {
     
     @FXML
-    private TextField estados,alfabeto,alfabeto2,eInicial,eFinal,cadena;
+    private TextField estados,alfabeto,alfabeto2,eInicial,eFinal,cadena,salida;
     @FXML
     private ScrollPane scrollP;
+    @FXML
+    private AnchorPane menu, datosView,tablaView,principalView;
+    @FXML
+    private TextArea textAreaDatos;
+    @FXML
+    private TableView<DatosTu> tablaPri;
+    @FXML
+    private TableColumn<DatosTu, String> columnaCN,columnaE,columnaCA,columnaR;
+    private ObservableList<DatosTu> tablaPrincipal = FXCollections.observableArrayList();
+
      GridPane tablaEstados =  new GridPane();
     String estadoI = ""; 
     String estadoF =  "";
@@ -40,15 +53,60 @@ public class FXMLDocumentController implements Initializable {
     ArrayList<Reglas> re = new ArrayList<Reglas>(); 
     boolean bandera = false;
     
+    
+    
+//--------------------------Vistas-------------------------------------    
+    public void showMenu(){
+        menu.setVisible(true);
+        datosView.setVisible(false);
+        tablaView.setVisible(false);
+        principalView.setVisible(false);
+      
+        
+    }
+    public void showDatosView(){
+        menu.setVisible(false);
+        datosView.setVisible(true);
+        tablaView.setVisible(false);
+        principalView.setVisible(false);
+        estados.setText("");
+        alfabeto.setText("");
+        alfabeto2.setText("");
+        eInicial.setText("");
+        eFinal.setText("");
+    }
+    public void showTablaView(){
+        menu.setVisible(false);
+        datosView.setVisible(false);
+        tablaView.setVisible(true);
+        principalView.setVisible(false);
+    }
+    public void showPrincipalView(){
+        menu.setVisible(false);
+        datosView.setVisible(false);
+        tablaView.setVisible(false);
+        principalView.setVisible(true);
+        cadena.setText("");
+        salida.setText("");
+        tablaPrincipal.clear();
+        tablaPri.setItems(tablaPrincipal);
+    }
+//----------------------------------------------------------------------
+    
     @FXML
-    private void handleButtonAction(ActionEvent event) {
+    private void empezar(ActionEvent event) {
+       showDatosView();   
+    }
+    @FXML
+    private void continuar(ActionEvent event) {
+        tablaEstados.getChildren().clear();
         setFilas();
         setColumnas();
         setContenidoTabla();
         scrollP.setContent(tablaEstados);
         setEstadoFinal();
         setEstadoInicial();
-        setCadena();
+        showTablaView();
        
     }
     private void setEstadoInicial(){
@@ -73,12 +131,14 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     @FXML
-    private void handleButtonAction2(ActionEvent event) {
-       
+    private void continuar2(ActionEvent event) {
         getReglas();
+        showPrincipalView();
     }
     @FXML
     private void handleButtonAction3(ActionEvent event) {
+        tablaPrincipal.clear();
+        tablaPri.setItems(tablaPrincipal);
         setEstadoInicial();
         setCadena();
         ejecutarMT(texto);
@@ -86,6 +146,7 @@ public class FXMLDocumentController implements Initializable {
     
     private void ejecutarMT(String cadena){
         bandera = false;
+        
         int indexC = 0;
         String simbolo = "";
         System.out.println("cadena: "+cadena);
@@ -100,12 +161,15 @@ public class FXMLDocumentController implements Initializable {
             for (int i = 0; i < re.size(); i++) {
                 Reglas aux = re.get(i);
                 if(estadoI.equals(aux.getEstadoActual()) && simbolo.equals(aux.getSimboloActual())){
-                     //(estadoActual, estadoAmoverse, simboloActual,simboloARemplazar,movimiento)
-                    System.out.println("Simbolo: "+simbolo+"----index: "+indexC);
-                    System.out.println(aux.getEstadoActual()+":"+aux.getEstadoNuevo()+":"+aux.getSimboloActual()+":"+aux.getSimboloNuevo()+":"+aux.getMovimiento());
-                    System.out.println("Cadena Actual: "+ cadena);
+                    DatosTu auxTu = new DatosTu();
+                    auxTu.setCadena(cadena);
+                    
+                   // System.out.println("Simbolo: "+simbolo+"----index: "+indexC);
+                   // System.out.println(aux.getEstadoActual()+":"+aux.getEstadoNuevo()+":"+aux.getSimboloActual()+":"+aux.getSimboloNuevo()+":"+aux.getMovimiento());
+                   // System.out.println("Cadena Actual: "+ cadena);
                     cadena = replaceCharAt(cadena, indexC, aux.getSimboloNuevo().charAt(0));
-                    System.out.println("Cadena Nueva: "+cadena);
+                   // System.out.println("Cadena Nueva: "+cadena);
+                    auxTu.setCadenaN(cadena);
                     if("R".equals(aux.getMovimiento())){
                         indexC++;
                         System.out.println("Aumento: "+indexC);
@@ -113,10 +177,16 @@ public class FXMLDocumentController implements Initializable {
                         indexC--;
                         System.out.println("Reduccion "+indexC);
                     }
+                    auxTu.setEstado(estadoI);
                     System.out.println("Estado Actual: "+estadoI);
                     estadoI = aux.getEstadoNuevo();
                     System.out.println("Estado Nuevo: "+estadoI);
+                    auxTu.setRegla(aux.getEstadoNuevo(), aux.getSimboloNuevo(), aux.getMovimiento());
+                    
+                    tablaPrincipal.add(auxTu);
+                    tablaPri.setItems(tablaPrincipal);
                     if(estadoI.equals(estadoF)){
+                        salida.setText(cadena);
                         System.out.println("FIN DEL PROGRAMA "+cadena);
                         bandera = true;
                     }
@@ -215,6 +285,11 @@ public class FXMLDocumentController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {        
+        showMenu();
+        columnaCA.setCellValueFactory(cellData -> cellData.getValue().cadenaProperty());
+        columnaCN.setCellValueFactory(cellData -> cellData.getValue().cadenaNProperty());
+        columnaE.setCellValueFactory(cellData -> cellData.getValue().estadoProperty());
+        columnaR.setCellValueFactory(cellData -> cellData.getValue().reglaProperty());
     }    
     
 }
