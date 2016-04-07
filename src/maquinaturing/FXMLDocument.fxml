@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="407.0" prefWidth="506.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.65" fx:controller="maquinaturing.FXMLDocumentController">
+   <children>
+      <AnchorPane prefHeight="470.0" prefWidth="506.0">
+         <children>
+            <Label layoutX="41.0" layoutY="48.0" text="Q" />
+            <TextField fx:id="estados" layoutX="70.0" layoutY="44.0" />
+            <Label layoutX="30.0" layoutY="88.0" text="Sigma" />
+            <TextField fx:id="alfabeto" layoutX="75.0" layoutY="84.0" />
+            <Label layoutX="46.0" layoutY="124.0" text="T" />
+            <TextField fx:id="alfabeto2" layoutX="75.0" layoutY="120.0" />
+            <Label layoutX="41.0" layoutY="162.0" text="q0" />
+            <TextField fx:id="eInicial" layoutX="70.0" layoutY="158.0" />
+            <Label layoutX="41.0" layoutY="195.0" text="F" />
+            <TextField fx:id="eFinal" layoutX="70.0" layoutY="191.0" />
+            <ScrollPane fx:id="scrollP" layoutX="50.0" layoutY="223.0" prefHeight="200.0" prefWidth="408.0" />
+            <Button fx:id="Temp" layoutX="328.0" layoutY="72.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Temp" />
+            <Button layoutX="338.0" layoutY="111.0" mnemonicParsing="false" onAction="#handleButtonAction2" text="Reglas" />
+            <TextField fx:id="cadena" layoutX="264.0" layoutY="167.0" />
+            <Button layoutX="425.0" layoutY="171.0" mnemonicParsing="false" onAction="#handleButtonAction3" text="Checar" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
