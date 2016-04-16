@@ -14,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
@@ -122,12 +124,23 @@ public class FXMLDocumentController implements Initializable {
             //Alert error
         }
     }
-    private void setCadena(){
-        if(!"".equals(cadena.getText())){
-        texto = cadena.getText();
-        }else{
-            //Alert error
+    private boolean setCadena(){
+        String aux = cadena.getText();
+        String aux2 = alfabeto.getText();
+        for (int i = 0; i < aux2.length(); i++) {
+            aux = aux.replace(aux2.charAt(i)+"","");
         }
+        if(!"".equals(cadena.getText()) && aux.length() == 0){
+        texto = cadena.getText();
+        return true;
+        }
+        Alert alert = new Alert(AlertType.INFORMATION);
+alert.setTitle("Information Dialog");
+alert.setHeaderText(null);
+alert.setContentText("La cadena no coincide con el alfabeto");
+
+alert.showAndWait();
+        return false;
     }
     @FXML
     private void continuar2(ActionEvent event) {
@@ -139,7 +152,8 @@ public class FXMLDocumentController implements Initializable {
         tablaPrincipal.clear();
         tablaPri.setItems(tablaPrincipal);
         setEstadoInicial();
-        setCadena();
+        boolean bandera = setCadena();
+        if(bandera)
         ejecutarMT(texto);
     }
     
