@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
 <?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -9,13 +10,13 @@
 
 <AnchorPane id="AnchorPane" prefHeight="407.0" prefWidth="506.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="maquinaturing.FXMLDocumentController">
    <children>
-      <AnchorPane fx:id="menu" prefHeight="470.0" prefWidth="506.0">
+      <AnchorPane fx:id="menu" prefHeight="470.0" prefWidth="506.0" visible="false">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="266.0" layoutX="156.0" layoutY="115.0" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-: 118AB2;" width="195.0" />
             <Button layoutX="223.0" layoutY="256.0" mnemonicParsing="false" onAction="#empezar" text="Empezar" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="datosView" prefHeight="470.0" prefWidth="506.0" visible="false">
+      <AnchorPane fx:id="datosView" prefHeight="470.0" prefWidth="506.0">
          <children>
             <Label layoutX="41.0" layoutY="48.0" text="Q" />
             <TextField fx:id="estados" layoutX="70.0" layoutY="44.0" />
@@ -28,6 +29,13 @@
             <Label layoutX="41.0" layoutY="195.0" text="F" />
             <TextField fx:id="eFinal" layoutX="70.0" layoutY="191.0" />
             <Button fx:id="Temp" layoutX="328.0" layoutY="72.0" mnemonicParsing="false" onAction="#continuar" text="Continuar" />
+            <RadioButton fx:id="rizquierda" layoutX="41.0" layoutY="283.0" mnemonicParsing="false" text="Izquierda">
+               <toggleGroup>
+                  <ToggleGroup fx:id="cabezal" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="rderecha" layoutX="150.0" layoutY="283.0" mnemonicParsing="false" text="Derecha" toggleGroup="$cabezal" />
+            <Label layoutX="91.0" layoutY="253.0" text="Cabezal" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="tablaView" prefHeight="470.0" prefWidth="506.0" visible="false">

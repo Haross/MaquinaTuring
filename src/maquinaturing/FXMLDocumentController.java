@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -43,12 +44,14 @@ public class FXMLDocumentController implements Initializable {
     private TableView<DatosTu> tablaPri;
     @FXML
     private TableColumn<DatosTu, String> columnaCN,columnaE,columnaCA,columnaR;
+    @FXML private RadioButton rizquierda,rderecha;
     private ObservableList<DatosTu> tablaPrincipal = FXCollections.observableArrayList();
 
      GridPane tablaEstados =  new GridPane();
     String estadoI = ""; 
     String estadoF =  "";
     String texto = "";
+    boolean lectura = true; //true izq
     int index = 0; //Indice de la cinta
     ArrayList<Reglas> re = new ArrayList<Reglas>(); 
     boolean bandera = false;
@@ -103,12 +106,16 @@ public class FXMLDocumentController implements Initializable {
         setFilas();
         setColumnas();
         setContenidoTabla();
-      
+      setDireccionCabezal();
         scrollP.setContent(tablaEstados);
         setEstadoFinal();
         setEstadoInicial();
         showTablaView();
        
+    }
+    private void setDireccionCabezal(){
+        lectura = rizquierda.isSelected();
+        System.out.println("Lectura:" +lectura);
     }
     private void setEstadoInicial(){
         if(!"".equals(eInicial.getText())){
@@ -132,6 +139,7 @@ public class FXMLDocumentController implements Initializable {
         }
         if(!"".equals(cadena.getText()) && aux.length() == 0){
         texto = cadena.getText();
+        
         return true;
         }
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -161,6 +169,12 @@ alert.showAndWait();
         bandera = false;
         
         int indexC = 0;
+        if(lectura){
+            indexC = 0;
+        }else{
+            indexC = cadena.length()-1;
+        }
+        System.out.println("IndexC "+ indexC);
         String simbolo = "";
         System.out.println("cadena: "+cadena);
         while(!bandera){
