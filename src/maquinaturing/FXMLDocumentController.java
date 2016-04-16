@@ -99,6 +99,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void empezar(ActionEvent event) {
        showDatosView();   
+       rizquierda.setSelected(true);
     }
     @FXML
     private void continuar(ActionEvent event) {
@@ -313,6 +314,7 @@ alert.showAndWait();
     @Override
     public void initialize(URL url, ResourceBundle rb) {        
         showMenu();
+         rizquierda.setSelected(true);
         columnaCA.setCellValueFactory(cellData -> cellData.getValue().cadenaProperty());
         columnaCN.setCellValueFactory(cellData -> cellData.getValue().cadenaNProperty());
         columnaE.setCellValueFactory(cellData -> cellData.getValue().estadoProperty());
